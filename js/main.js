@@ -63,9 +63,24 @@ function print_plot(i,j) {
     ctx.fillRect(i*plot_x,j*plot_y,plot_x,plot_y);
 }
 
-
+var new_face 
+var faces
+var faces_count = 10
+var former_face
 function update_face(){
-    switch_face(create_face())
+    if(faces_count == 10)
+    {
+        former_face = new_face
+        new_face = create_face()
+        faces = create_face_transition(former_face,new_face,10)
+        faces_count = 0
+        switch_face(former_face)
+    }
+    else
+    {
+        switch_face(faces[faces_count])
+        faces_count += 1
+    }
 }
 function gameLoop(time) {
     // // time = high-resolution timestamp (ms)
@@ -108,7 +123,10 @@ async function init() {
     comps = await loadBin('assets/face_pca/eigenfaces_components.bin');    // length = 15 * 11750
         //alert("comps")
 //
-
+    former_face = create_face()
+    switch_face(former_face)
+    new_face = create_face()  // initialize new_face here
+    switch_face(new_face)
 }
 
 const WIDTH = 94;
@@ -121,21 +139,36 @@ function create_face() {
 
     const weights = new Float32Array(N_COMPONENTS);
     for (let i = 0; i < N_COMPONENTS; i++) {
-        weights[i] = (Math.random() * 2 - 1) * std[i];
+        weights[i] = mean[i] + (Math.random() * 2 - 1) * std[i];
     }
 
     for (let j = 0; j < N_FEATURES; j++) {
         let val = 0;
-
         for (let i = 0; i < N_COMPONENTS; i++) {
-            val += (weights[i] + mean[i]) * comps[i * N_FEATURES + j];
+            val += weights[i] * comps[i * N_FEATURES + j];
         }
-
         flat[j] = val;
     }
     return flat;
 }
 
+function create_face_transition(face1, face2, amount) {
+    const faces = [];
+    const face_dif = [];
+
+    for (let k = 0; k < N_FEATURES; k++) {
+        face_dif[k] = (face2[k] - face1[k]) / amount;  // direction: face1 → face2
+    }
+
+    for (let i = 0; i < amount; i++) {
+        faces[i] = [];
+        for (let k = 0; k < N_FEATURES; k++) {
+            faces[i][k] = face1[k] + face_dif[k] * i;
+        }
+    }
+
+    return faces;
+}
 
 function switch_face(face){ 
     for (let col = 0; col < WIDTH; col++) {       // col = 0..93
