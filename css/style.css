@@ -1,0 +1,12 @@
+body
+ { 
+    margin: 0; 
+    padding: 0;
+     height: 100%;
+      overflow: hidden; 
+} 
+#myCanvas 
+{ 
+    height: 100vh;
+    image-rendering: pixelated; 
+}

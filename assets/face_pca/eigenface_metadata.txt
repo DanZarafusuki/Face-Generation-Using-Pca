@@ -1,0 +1,8 @@
+Eigenface Model Metadata:
+--------------------------
+Number of Principal Components (n_components): 20
+Image Height (h): 125
+Image Width (w): 94
+Total Features (pixels per image): 11750
+Number of Training Samples (n_samples): 1288
+Binary Threshold for B&W conversion: 0.5
