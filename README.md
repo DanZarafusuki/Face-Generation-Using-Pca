@@ -36,15 +36,19 @@ A single-page web app that continuously generates and morphs synthetic human fac
 
 ## Project structure 
 
-project/
-├── index.html                        # single page entry point
-├── script.js                         # face generation + canvas rendering
-├── notebook.ipynb                    # PCA training pipeline
-└── assets/face_pca/
-├── weights_mean.bin              # PCA weight means (20 floats)
-├── weights_std.bin               # PCA weight std devs (20 floats)
-└── eigenfaces_components.bin     # component matrix (20 × 11750 floats)
-
+- `index.html`
+- `README.md`
+- `assets/`
+  - `face_pca/`
+    - `eigenface_metadata.txt`
+    - `eigenfaces_components.bin`
+    - `face_pca_notheshold.7z`
+    - `weights_mean.bin`
+    - `weights_std.bin`
+- `css/`
+  - `style.css`
+- `js/`
+  - `main.js`
 ---
 
 ## Key parameters
